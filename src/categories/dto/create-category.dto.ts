@@ -7,5 +7,5 @@ export class CreateCategoryDto {
 
   @IsNotEmpty()
   @IsUrl()
-  image: string; // Ссылка на изображение
+  image: string;
 }

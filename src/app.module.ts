@@ -4,10 +4,9 @@ import { AppService } from './app.service';
 import { CategoriesController } from './categories/categories.controller';
 import { CategoriesService } from './categories/categories.service';
 import { CategoriesModule } from './categories/categories.module';
-import { CatsModule } from './cats/cats.module';
 
 @Module({
-  imports: [CategoriesModule, CatsModule],
+  imports: [CategoriesModule],
   controllers: [AppController, CategoriesController],
   providers: [AppService, CategoriesService],
 })

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
-  private readonly categories = [];
+  private readonly categories: CreateCategoryDto[] = [];
 
   create(category: CreateCategoryDto) {
     this.categories.push(category);
@@ -18,7 +20,7 @@ export class CategoriesService {
   }
 
   update(id: number, category: UpdateCategoryDto) {
-    const index = this.categories.findIndex((cat) => cat.id === id);
+    const index = this.categories.findIndex((category) => category.id === id);
     if (index === -1) throw new Error('Category not found');
 
     this.categories[index] = { ...this.categories[index], ...category };
@@ -26,7 +28,7 @@ export class CategoriesService {
   }
 
   remove(id: number) {
-    const index = this.categories.findIndex((cat) => cat.id === id);
+    const index = this.categories.findIndex((category) => category.id === id);
     if (index !== -1) {
       return this.categories.splice(index, 1);
     }
