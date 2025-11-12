@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { randomUUID } from 'crypto';
 
@@ -30,7 +34,7 @@ export class AwsService {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
-    const fileKey = `${randomUUID()}-${file.originalname}`; // уникальное имя файла
+    const fileKey = `${randomUUID()}-${file.originalname}`;
 
     const uploadParams = {
       Bucket: this.bucketName,
@@ -44,5 +48,13 @@ export class AwsService {
     return `https://${this.bucketName}.s3.${this.config.get<string>(
       'AWS_REGION',
     )}.amazonaws.com/${fileKey}`;
+  }
+  async deleteFile(file: string): Promise<{ message: string }> {
+    const deleteParams = new DeleteObjectCommand({
+      Bucket: this.bucketName,
+      Key: file.split('/').pop(),
+    });
+    await this.s3.send(deleteParams);
+    return { message: `File ${file} deleted successfully` };
   }
 }

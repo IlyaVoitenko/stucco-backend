@@ -58,7 +58,10 @@ export class CategoriesController {
     return this.categoriesService.update(+id, updateCategoryDto);
   }
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const selectedCategory = await this.categoriesService.findOne(+id);
+    if (!selectedCategory) throw new Error('Category not found');
+    await this.awsService.deleteFile(selectedCategory.image);
     return this.categoriesService.remove(+id);
   }
 }
