@@ -51,11 +51,35 @@ export class CategoriesController {
     return this.categoriesService.findOne(+id);
   }
   @Patch(':id')
-  update(
+  @UseInterceptors(
+    FileInterceptor('image', {
+      limits: { fileSize: 5 * 1024 * 1024 },
+      fileFilter(req, file, callback) {
+        if (!file.mimetype.match(/^image\/(png|jpeg|jpg|webp|avif|svg\+xml)$/))
+          return callback(new Error('File is invalid'), false);
+        else callback(null, true);
+      },
+    }),
+  )
+  async update(
     @Param('id') id: string,
+    @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.categoriesService.update(+id, updateCategoryDto);
+    const category = await this.categoriesService.findOne(+id);
+    if (!category) throw new Error('Category not found');
+
+    let newImageUrl = category.image;
+
+    if (file) {
+      await this.awsService.deleteFile(category.image);
+      newImageUrl = await this.awsService.uploadFile(file);
+    }
+
+    return this.categoriesService.update(+id, {
+      ...updateCategoryDto,
+      image: newImageUrl,
+    });
   }
   @Delete(':id')
   async remove(@Param('id') id: string) {
