@@ -14,8 +14,7 @@ export class CategoriesService {
     return this.prisma.category.findMany();
   }
   findOne(id: number) {
-    console.log('id::', id);
-    if (!id) throw new Error('Category ID is required');
+    if (!id) throw new Error('Category ID is required or ID is invalid');
     return this.prisma.category.findUnique({ where: { id } });
   }
   update(id: number, data: UpdateCategoryDto) {
@@ -23,7 +22,7 @@ export class CategoriesService {
     return this.prisma.category.update({ where: { id }, data });
   }
   remove(id: number) {
-    if (!id) throw new Error('Category ID is required');
+    if (!id) throw new Error('Category ID is required or ID is invalid');
     return this.prisma.category.delete({ where: { id } });
   }
 }

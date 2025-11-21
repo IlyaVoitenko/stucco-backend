@@ -3,7 +3,10 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+enum ProductType {
+  BY_METER
+  BY_ITEM
+}
 generator client {
  provider        = "prisma-client-js"
   output         = "../generated/prisma"
@@ -30,10 +33,20 @@ model Product {
   dimensions  String?
   price       Float?
   sku         String?
-  weight      Float?
-  height      Float?
+  type        ProductType 
+  sizes       SizeProduct[] 
   categoryId  Int                                    
   category    Category   @relation(fields: [categoryId], references: [id])
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+model SizeProduct {
+  id        Int       @id @default(autoincrement())
+  productId Int
+  product   Product   @relation(fields: [productId], references: [id])
+  meterPrice Float?      
+  width      Float?
+  height     Float?
+  itemPrice  Float?      
+  createdAt  DateTime @default(now())
 }
