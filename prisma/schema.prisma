@@ -59,9 +59,8 @@ model SizeProduct {
 }
 model User {
   id          Int        @id @default(autoincrement())
-  email       String     @unique
   password    String
-  name        String?
+  username    String     @unique
   role        UserRole   @default(USER)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
