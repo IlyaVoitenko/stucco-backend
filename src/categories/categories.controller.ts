@@ -9,12 +9,12 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoriesService } from './categories.service.js';
+import { CreateCategoryDto } from './dto/create-category.dto.js';
+import { UpdateCategoryDto } from './dto/update-category.dto.js';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ValidateImagePipe } from '../common/pipes';
-import { AwsService } from '../shared/aws.services';
+import { ValidateImagePipe } from '../common/pipes.js';
+import { AwsService } from '../shared/aws.services.js';
 
 @Controller('categories')
 export class CategoriesController {

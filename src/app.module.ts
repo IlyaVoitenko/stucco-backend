@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
 import { ConfigModule } from '@nestjs/config';
-import { CategoriesModule } from './categories/categories.module';
-import { UsersModule } from './users/users.module';
-import { AwsService } from './shared/aws.services';
-import { AwsModule } from './aws.module';
+import { CategoriesModule } from './categories/categories.module.js';
+import { UsersModule } from './users/users.module.js';
+import { AwsService } from './shared/aws.services.js';
+import { AwsModule } from './aws.module.js';
+import { PrismaService } from './prisma.service.js';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AwsModule } from './aws.module';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AwsService],
+  providers: [AppService, AwsService, PrismaService],
+  exports: [PrismaService],
 })
 export class AppModule {}

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
-import { CategoriesController } from './categories.controller';
-import { PrismaService } from 'src/prisma.service';
-import { AwsService } from 'src/shared/aws.services';
+import { CategoriesService } from './categories.service.js';
+import { CategoriesController } from './categories.controller.js';
+import { PrismaService } from '../prisma.service.js';
+import { AwsService } from '../shared/aws.services.js';
 
 @Module({
   imports: [],

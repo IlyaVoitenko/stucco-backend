@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { User } from '../../generated/prisma/client';
-import { CreateUserDto } from './dto/create_user.dto';
-import { UpdateUserDto } from './dto/update_user.dto';
+import { PrismaService } from '../prisma.service.js';
+import { User } from '../../generated/prisma/client.js';
+import { CreateUserDto } from './dto/create_user.dto.js';
+import { UpdateUserDto } from './dto/update_user.dto.js';
+import { LoginUserDto } from './dto/login_user.dto.js';
 
 @Injectable()
 export class UsersService {
@@ -24,5 +25,24 @@ export class UsersService {
     return await this.prisma.user.delete({
       where: { id: idUser },
     });
+  }
+  async loginUser(data: LoginUserDto): Promise<User | null> {
+    if (!data) throw new Error('Data is required to login a user');
+    const { username, email, password } = data;
+    if (username) {
+      return await this.prisma.user.findFirst({
+        where: {
+          username,
+          password,
+        },
+      });
+    } else {
+      return await this.prisma.user.findFirst({
+        where: {
+          email,
+          password,
+        },
+      });
+    }
   }
 }
