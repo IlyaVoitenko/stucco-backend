@@ -5,7 +5,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { UserRole } from '../../../generated/prisma/client.js';
+import { UserRole } from '../../generated/prisma/enums.js';
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()

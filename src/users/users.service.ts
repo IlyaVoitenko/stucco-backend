@@ -3,7 +3,8 @@ import { PrismaService } from '../prisma.service.js';
 import { CreateUserDto } from './dto/create_user.dto.js';
 import { UpdateUserDto } from './dto/update_user.dto.js';
 import { LoginUserDto } from './dto/login_user.dto.js';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UsersService {
@@ -40,13 +41,26 @@ export class UsersService {
     });
   }
   async loginUser(data: LoginUserDto) {
-    if (!data) throw new Error('login error ');
+    if (!data.password || !data.username) throw new Error('login error ');
     const { username, password } = data;
-    return await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         username,
-        password,
       },
     });
+    if (!user) throw new Error('User not found');
+    const passwordCompare = await compare(password, user.password);
+    if (!passwordCompare) throw new Error('Invalid password');
+
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      process.env.SECRET_KEY as string,
+      { expiresIn: '6h' },
+    );
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { jwtToken: token },
+    });
+    return token;
   }
 }
