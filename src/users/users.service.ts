@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
 import { CreateUserDto } from './dto/create_user.dto.js';
 import { UpdateUserDto } from './dto/update_user.dto.js';
@@ -11,46 +11,50 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
   async createUser(data: CreateUserDto) {
     if (!data.password || !data.username)
-      throw new Error('Data is required to create a user');
+      throw new BadRequestException('Data is required to create a user');
     const { password, username } = data;
     const userExist = await this.prisma.user.findUnique({
       where: { username },
     });
-    if (userExist) throw new Error('User already exists');
+    if (userExist) throw new BadRequestException('User already exists');
     const hashedPassword = await hash(password, 10);
 
     return await this.prisma.user.create({
       data: {
-        username,
+        ...data,
         password: hashedPassword,
       },
     });
   }
   async updateUser(data: UpdateUserDto, idUser: number) {
     if (!data || !idUser)
-      throw new Error('Data and User ID are required to update a user');
+      throw new BadRequestException(
+        'Data and User ID are required to update a user',
+      );
     return await this.prisma.user.update({
       where: { id: idUser },
       data,
     });
   }
   async removeUser(idUser: number) {
-    if (!idUser) throw new Error('User ID is required to remove a user');
+    if (!idUser)
+      throw new BadRequestException('User ID is required to remove a user');
     return await this.prisma.user.delete({
       where: { id: idUser },
     });
   }
   async loginUser(data: LoginUserDto) {
-    if (!data.password || !data.username) throw new Error('login error ');
+    if (!data.password || !data.username)
+      throw new BadRequestException('login error ');
     const { username, password } = data;
     const user = await this.prisma.user.findFirst({
       where: {
         username,
       },
     });
-    if (!user) throw new Error('User not found');
+    if (!user) throw new BadRequestException('User not found');
     const passwordCompare = await compare(password, user.password);
-    if (!passwordCompare) throw new Error('Invalid password');
+    if (!passwordCompare) throw new BadRequestException('Invalid password');
 
     const token = jwt.sign(
       { id: user.id, username: user.username },
