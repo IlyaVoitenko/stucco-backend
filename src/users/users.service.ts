@@ -40,7 +40,7 @@ export class UsersService {
     if (!idUser)
       throw new BadRequestException('User ID is required to remove a user');
     return await this.prisma.user.delete({
-      where: { id: idUser },
+      where: { id: +idUser },
     });
   }
   async loginUser(data: LoginUserDto) {
@@ -66,5 +66,23 @@ export class UsersService {
       data: { jwtToken: token },
     });
     return token;
+  }
+  async logoutUser(idUser: number) {
+    if (!idUser)
+      throw new BadRequestException('User ID is required to logout a user');
+    return await this.prisma.user.update({
+      where: { id: +idUser },
+      data: { jwtToken: '' },
+    });
+  }
+  async getUserById(idUser: number) {
+    if (!idUser)
+      throw new BadRequestException('User ID is required to logout a user');
+    return await this.prisma.user.findUnique({
+      where: { id: +idUser },
+    });
+  }
+  async getAllUsers() {
+    return await this.prisma.user.findMany();
   }
 }
