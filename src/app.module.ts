@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module.js';
 import { AwsService } from './shared/aws.services.js';
 import { AwsModule } from './aws.module.js';
 import { PrismaService } from './prisma.service.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { PrismaService } from './prisma.service.js';
     AwsModule,
     CategoriesModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, AwsService, PrismaService],

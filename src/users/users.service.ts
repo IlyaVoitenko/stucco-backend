@@ -2,9 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
 import { CreateUserDto } from './dto/create_user.dto.js';
 import { UpdateUserDto } from './dto/update_user.dto.js';
-import { LoginUserDto } from './dto/login_user.dto.js';
-import { hash, compare } from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -33,7 +31,7 @@ export class UsersService {
       );
     return await this.prisma.user.update({
       where: { id: idUser },
-      data,
+      data: { ...data },
     });
   }
   async removeUser(idUser: number) {
@@ -41,38 +39,6 @@ export class UsersService {
       throw new BadRequestException('User ID is required to remove a user');
     return await this.prisma.user.delete({
       where: { id: +idUser },
-    });
-  }
-  async loginUser(data: LoginUserDto) {
-    if (!data.password || !data.username)
-      throw new BadRequestException('login error ');
-    const { username, password } = data;
-    const user = await this.prisma.user.findFirst({
-      where: {
-        username,
-      },
-    });
-    if (!user) throw new BadRequestException('User not found');
-    const passwordCompare = await compare(password, user.password);
-    if (!passwordCompare) throw new BadRequestException('Invalid password');
-
-    const token = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.SECRET_KEY as string,
-      { expiresIn: '6h' },
-    );
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { jwtToken: token },
-    });
-    return token;
-  }
-  async logoutUser(idUser: number) {
-    if (!idUser)
-      throw new BadRequestException('User ID is required to logout a user');
-    return await this.prisma.user.update({
-      where: { id: +idUser },
-      data: { jwtToken: '' },
     });
   }
   async getUserById(idUser: number) {
