@@ -8,6 +8,7 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service.js';
 import { CreateCategoryDto } from './dto/create-category.dto.js';
@@ -15,6 +16,9 @@ import { UpdateCategoryDto } from './dto/update-category.dto.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ValidateImagePipe } from '../common/pipes.js';
 import { AwsService } from '../shared/aws.services.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { AuthGuard } from '../auth/guards/auth.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
 @Controller('categories')
 export class CategoriesController {
@@ -22,6 +26,8 @@ export class CategoriesController {
     private readonly categoriesService: CategoriesService,
     private readonly awsService: AwsService,
   ) {}
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
@@ -33,6 +39,8 @@ export class CategoriesController {
       },
     }),
   )
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
   async create(
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,
@@ -41,15 +49,20 @@ export class CategoriesController {
     createCategoryDto.image = imageUrl;
     return this.categoriesService.create(createCategoryDto);
   }
-
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
   @Get()
   findAll() {
     return this.categoriesService.findAll();
   }
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
   }
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
   @Patch(':id')
   @UseInterceptors(
     FileInterceptor('image', {
@@ -61,6 +74,8 @@ export class CategoriesController {
       },
     }),
   )
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
   async update(
     @Param('id') id: string,
     @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,
@@ -81,6 +96,8 @@ export class CategoriesController {
       image: newImageUrl,
     });
   }
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const selectedCategory = await this.categoriesService.findOne(+id);
