@@ -27,7 +27,7 @@ export class AuthService {
     if (!user) throw new BadRequestException('User not found');
     const passwordCompare = await compare(password, user.password);
     if (!passwordCompare) throw new UnauthorizedException('Invalid password');
-    const payload = { sub: user.id, username: user.username, role: user.role };
+    const payload = { id: user.id, username: user.username, role: user.role };
     const jwtToken = await this.jwtService.signAsync(payload);
     await this.prisma.user.update({
       where: { id: user.id },
@@ -39,6 +39,7 @@ export class AuthService {
   }
   async logout(id: number) {
     if (!id) throw new BadRequestException('logout error ');
+    // const payload = await this.jwtService.verifyAsync(token);
     const user = await this.prisma.user.findFirst({
       where: { id: +id },
     });
