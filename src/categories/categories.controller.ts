@@ -19,6 +19,7 @@ import { AwsService } from '../shared/aws.services.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
+import { CsrfGuard } from '../auth/guards/csrf.guard.js';
 
 @Controller('categories')
 export class CategoriesController {
@@ -26,7 +27,7 @@ export class CategoriesController {
     private readonly categoriesService: CategoriesService,
     private readonly awsService: AwsService,
   ) {}
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Post()
   @UseInterceptors(
@@ -39,7 +40,7 @@ export class CategoriesController {
       },
     }),
   )
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   async create(
     @Body() createCategoryDto: CreateCategoryDto,
@@ -49,19 +50,19 @@ export class CategoriesController {
     createCategoryDto.image = imageUrl;
     return this.categoriesService.create(createCategoryDto);
   }
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Get()
   findAll() {
     return this.categoriesService.findAll();
   }
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
   }
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Patch(':id')
   @UseInterceptors(
@@ -74,7 +75,7 @@ export class CategoriesController {
       },
     }),
   )
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   async update(
     @Param('id') id: string,
@@ -96,7 +97,7 @@ export class CategoriesController {
       image: newImageUrl,
     });
   }
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Delete(':id')
   async remove(@Param('id') id: string) {
