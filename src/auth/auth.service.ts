@@ -40,16 +40,19 @@ export class AuthService {
     });
     res.cookie('jwtToken', jwtToken, {
       httpOnly: true,
+      // sameSite: 'none',
       // secure: true,
       secure: false,
-      sameSite: 'none',
+      sameSite: 'lax',
       maxAge: 21600,
     });
 
     res.cookie('csrfToken', csrf, {
       httpOnly: false,
+      // sameSite: 'none',
+      // secure: true,
       secure: false,
-      sameSite: 'none',
+      sameSite: 'lax',
       maxAge: 21600,
     });
     return {
