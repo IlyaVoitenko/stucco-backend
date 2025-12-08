@@ -7,10 +7,14 @@ import {
   Patch,
   Param,
   Res,
+  Get,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { LoginUserDto } from './dto/login_user.dto.js';
 import { AuthService } from './auth.service.js';
 import { Response } from 'express';
+import { AuthGuard } from './guards/auth.guard.js';
 
 @Controller('auth')
 export class AuthController {
@@ -31,5 +35,10 @@ export class AuthController {
   @Patch('logout/:id')
   logout(@Param('id') id: number, @Res() res: Response) {
     return this.authService.logout(id, res);
+  }
+  @Get('is-logged-in')
+  @UseGuards(AuthGuard)
+  isLoggedIn(@Req() req: Request) {
+    return { req };
   }
 }

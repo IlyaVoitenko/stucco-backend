@@ -61,7 +61,6 @@ export class AuthService {
   }
   async logout(id: number, res: Response) {
     if (!id) throw new BadRequestException('logout error ');
-    // const payload = await this.jwtService.verifyAsync(token);
     const user = await this.prisma.user.findFirst({
       where: { id: +id },
     });
