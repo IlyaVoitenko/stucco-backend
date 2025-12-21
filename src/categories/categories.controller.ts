@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service.js';
 import { CreateCategoryDto } from './dto/create-category.dto.js';
@@ -42,15 +43,22 @@ export class CategoriesController {
     }),
   )
   async create(
-    @Body() createCategoryDto: CreateCategoryDto,
+    @Body() dto: CreateCategoryDto,
     @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,
   ) {
+    const exists = await this.categoriesService.findOneByName(dto.name);
+    console.log('exists', exists);
+    if (exists) {
+      throw new BadRequestException('Category with this name already exists');
+    }
+
     const imageUrl = await this.awsService.uploadFile(file);
-    createCategoryDto.image = imageUrl;
-    return this.categoriesService.create(createCategoryDto);
+    return this.categoriesService.create({
+      name: dto.name,
+      image: imageUrl,
+    });
   }
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
-  @Roles('ADMIN', 'USER')
+
   @Get()
   findAll() {
     return this.categoriesService.findAll();
@@ -92,7 +100,7 @@ export class CategoriesController {
     }
 
     return this.categoriesService.update(+id, {
-      ...updateCategoryDto,
+      name: updateCategoryDto.name,
       image: newImageUrl,
     });
   }

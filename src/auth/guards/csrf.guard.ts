@@ -1,15 +1,29 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
+import { Request } from 'express';
 
 @Injectable()
 export class CsrfGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const req = context.switchToHttp().getRequest();
-    const csrfHeader = req.headers['x-csrf-token'];
-    const csrfSession = req.session?.csrfToken;
+    const req = context
+      .switchToHttp()
+      .getRequest<Request & { cookies: { csrfToken?: string } }>();
 
-    if (!csrfHeader || csrfHeader !== csrfSession) {
-      return false;
+    if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+      return true;
     }
+
+    const csrfHeader = req.get('x-csrf-token');
+    const csrfCookie = req.cookies?.csrfToken;
+
+    if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie) {
+      throw new ForbiddenException('Invalid CSRF token');
+    }
+
     return true;
   }
 }
