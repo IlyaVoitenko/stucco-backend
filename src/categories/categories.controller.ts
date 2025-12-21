@@ -27,6 +27,7 @@ export class CategoriesController {
     private readonly categoriesService: CategoriesService,
     private readonly awsService: AwsService,
   ) {}
+
   @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Post()
@@ -40,8 +41,6 @@ export class CategoriesController {
       },
     }),
   )
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
-  @Roles('ADMIN', 'USER')
   async create(
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,

@@ -38,7 +38,7 @@ export class AuthController {
   }
   @Get('is-logged-in')
   @UseGuards(AuthGuard)
-  isLoggedIn(@Req() req: Request) {
-    return { req };
+  isLoggedIn() {
+    return { auth: true };
   }
 }
