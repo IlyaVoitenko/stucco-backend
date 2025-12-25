@@ -21,7 +21,7 @@ export class AuthService {
     username: string,
     password: string,
     res: Response,
-  ): Promise<{ ok: boolean }> {
+  ): Promise<void> {
     if (!password || !username)
       throw new BadRequestException('login data is required');
     const user = await this.prisma.user.findUnique({
@@ -68,21 +68,33 @@ export class AuthService {
       secure: false,
       maxAge: 6 * 60 * 60 * 1000,
     });
-    return {
-      ok: true,
-    };
+    res.send({ ok: true });
   }
-  async logout(id: number, res: Response) {
-    if (!id) throw new BadRequestException('logout error ');
-    const user = await this.prisma.user.findFirst({
-      where: { id: +id },
+  async logout(
+    req: Request & { user?: { id: number } },
+    res: Response,
+  ): Promise<void> {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new UnauthorizedException();
+    }
+
+    res.clearCookie('jwtToken', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: false,
     });
-    if (!user) throw new BadRequestException('User not found');
-    res.clearCookie('jwtToken', { httpOnly: true, sameSite: 'none' });
-    res.clearCookie('csrfToken', { httpOnly: false, sameSite: 'none' });
-    return await this.prisma.user.update({
-      where: { id: +id },
+
+    res.clearCookie('csrfToken', {
+      httpOnly: false,
+      sameSite: 'lax',
+      secure: false,
+    });
+
+    await this.prisma.user.update({
+      where: { id: userId },
       data: { jwtToken: '', csrfToken: '' },
     });
+    res.send({ ok: true });
   }
 }

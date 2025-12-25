@@ -5,10 +5,10 @@ import {
   HttpCode,
   HttpStatus,
   Patch,
-  Param,
   Res,
   Get,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { LoginUserDto } from './dto/login_user.dto.js';
 import { AuthService } from './auth.service.js';
@@ -31,9 +31,10 @@ export class AuthController {
       res,
     );
   }
-  @Patch('logout/:id')
-  logout(@Param('id') id: number, @Res() res: Response) {
-    return this.authService.logout(id, res);
+  @Patch('logout')
+  @UseGuards(AuthGuard)
+  logout(@Req() req: Request, @Res() res: Response) {
+    return this.authService.logout(req, res);
   }
   @Get('is-logged-in')
   @UseGuards(AuthGuard)

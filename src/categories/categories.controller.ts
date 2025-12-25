@@ -47,7 +47,6 @@ export class CategoriesController {
     @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,
   ) {
     const exists = await this.categoriesService.findOneByName(dto.name);
-    console.log('exists', exists);
     if (exists) {
       throw new BadRequestException('Category with this name already exists');
     }
@@ -63,8 +62,7 @@ export class CategoriesController {
   findAll() {
     return this.categoriesService.findAll();
   }
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
-  @Roles('ADMIN', 'USER')
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
