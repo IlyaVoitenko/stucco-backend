@@ -25,6 +25,6 @@ import { CsrfGuard } from './guards/csrf.guard.js';
   ],
   providers: [AuthService, PrismaService, AuthGuard, CsrfGuard],
   controllers: [AuthController],
-  exports: [AuthService, AuthGuard, CsrfGuard],
+  exports: [AuthService, AuthGuard, CsrfGuard, JwtModule],
 })
 export class AuthModule {}
