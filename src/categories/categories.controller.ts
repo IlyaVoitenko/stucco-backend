@@ -67,6 +67,7 @@ export class CategoriesController {
   findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
   }
+
   @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Patch(':id')
@@ -80,11 +81,9 @@ export class CategoriesController {
       },
     }),
   )
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
-  @Roles('ADMIN', 'USER')
   async update(
     @Param('id') id: string,
-    @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     const category = await this.categoriesService.findOne(+id);
