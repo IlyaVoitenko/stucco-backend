@@ -15,11 +15,6 @@ export class CreateSizeProductDto {
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
-  meterPrice?: number;
-
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
   width?: number;
 
   @Type(() => Number)
@@ -47,8 +42,6 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
   material!: string;
-  @IsString()
-  dimensions?: string;
   @IsNotEmpty()
   @Type(() => Number)
   @IsNumber()

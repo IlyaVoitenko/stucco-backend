@@ -24,7 +24,11 @@ model Category {
   id          Int        @id @default(autoincrement())
   name        String     @unique                     
   image       String                                   
-  products    Product[]                               
+  products    Product[]           
+  hasWidth    Boolean
+  hasHeight   Boolean
+  hasDepth    Boolean
+  hasDiameter Boolean                    
   createdAt   DateTime   @default(now())              
   updatedAt   DateTime   @updatedAt                    
 }
@@ -34,7 +38,6 @@ model Product {
   description String?
   images      String[]                               
   material    String?
-  dimensions  String?
   price       Float?
   sku         String?
   type        String?
@@ -48,9 +51,10 @@ model SizeProduct {
   id        Int       @id @default(autoincrement())
   productId Int
   product   Product   @relation(fields: [productId], references: [id])
-  meterPrice Float?      
   width      Float?
   height     Float?
+  depth      Float?
+  diameter   Float?
   itemPrice  Float?    
 
   createdAt  DateTime @default(now())

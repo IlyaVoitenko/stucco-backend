@@ -29,6 +29,11 @@ export class ProductsController {
     return this.productsService.findOne(+id);
   }
 
+  @Get('all/:categoryName')
+  findProductsByCategory(@Param('categoryName') categoryName: string) {
+    return this.productsService.findByCategory(categoryName);
+  }
+
   @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Patch(':id')

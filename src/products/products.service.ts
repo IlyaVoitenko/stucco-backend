@@ -13,7 +13,6 @@ export class ProductsService {
         description: dto.description,
         images: dto.images,
         material: dto.material,
-        dimensions: dto.dimensions,
         price: dto.price,
         sku: dto.sku,
         type: dto.type,
