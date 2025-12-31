@@ -4,7 +4,14 @@ import { PrismaService } from '../prisma.service.js';
 @Injectable()
 export class CategoriesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(data: { name: string; image: string }) {
+  create(data: {
+    name: string;
+    image: string;
+    hasWidth?: boolean;
+    hasHeight?: boolean;
+    hasDepth?: boolean;
+    hasDiameter?: boolean;
+  }) {
     if (!data.name)
       throw new BadRequestException('Category name cannot be empty');
     return this.prisma.category.create({ data });

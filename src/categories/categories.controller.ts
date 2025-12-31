@@ -47,17 +47,14 @@ export class CategoriesController {
     @UploadedFile(new ValidateImagePipe()) file: Express.Multer.File,
   ) {
     const exists = await this.categoriesService.findOneByName(dto.name);
-    if (exists) {
+    if (exists)
       throw new BadRequestException('Category with this name already exists');
-    }
-
     const imageUrl = await this.awsService.uploadFile(file);
     return this.categoriesService.create({
-      name: dto.name,
+      ...dto,
       image: imageUrl,
     });
   }
-
   @Get()
   findAll() {
     return this.categoriesService.findAll();

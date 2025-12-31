@@ -25,10 +25,10 @@ model Category {
   name        String     @unique                     
   image       String                                   
   products    Product[]           
-  hasWidth    Boolean
-  hasHeight   Boolean
-  hasDepth    Boolean
-  hasDiameter Boolean                    
+  hasWidth    Boolean    @default(false)
+  hasHeight   Boolean    @default(false)
+  hasDepth    Boolean    @default(false)
+  hasDiameter Boolean    @default(false)                    
   createdAt   DateTime   @default(now())              
   updatedAt   DateTime   @updatedAt                    
 }
