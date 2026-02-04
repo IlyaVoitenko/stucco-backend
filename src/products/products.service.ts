@@ -6,23 +6,12 @@ import { UpdateProductDto } from './dto/update_product.dto.js';
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateProductDto) {
+  async create(dto: CreateProductDto, imageUrl?: string) {
     return this.prisma.product.create({
       data: {
-        name: dto.name,
-        description: dto.description,
-        images: dto.images,
-        material: dto.material,
-        price: dto.price,
-        sku: dto.sku,
-        type: dto.type,
-        categoryId: dto.categoryId,
-
-        sizes: dto.sizes
-          ? {
-              create: dto.sizes,
-            }
-          : undefined,
+        ...dto,
+        images: imageUrl ? [imageUrl] : [],
+        sizes: dto.sizes ? { create: dto.sizes } : undefined,
       },
       include: {
         sizes: true,
@@ -59,9 +48,9 @@ export class ProductsService {
     return product;
   }
 
-  async findByCategory(category: string) {
+  async findByCategory(categoryId: number) {
     return this.prisma.product.findMany({
-      where: { category: { name: category } },
+      where: { categoryId: categoryId },
       include: {
         sizes: true,
         category: true,
@@ -72,19 +61,34 @@ export class ProductsService {
     });
   }
 
-  async update(id: number, dto: UpdateProductDto) {
+  async update(id: number, dto: UpdateProductDto, imageUrls?: string[]) {
     await this.findOne(id);
+
+    const { categoryId, sizes, ...rest } = dto;
 
     return this.prisma.product.update({
       where: { id },
       data: {
-        ...dto,
-        sizes: dto.sizes
+        ...rest,
+
+        ...(imageUrls ? { images: imageUrls } : {}),
+
+        ...(categoryId
           ? {
-              deleteMany: {},
-              create: dto.sizes,
+              category: {
+                connect: { id: categoryId },
+              },
             }
-          : undefined,
+          : {}),
+
+        ...(sizes
+          ? {
+              sizes: {
+                deleteMany: {},
+                create: sizes,
+              },
+            }
+          : {}),
       },
       include: {
         sizes: true,
@@ -94,10 +98,13 @@ export class ProductsService {
   }
 
   async remove(id: number) {
-    await this.findOne(id);
-
-    return this.prisma.product.delete({
-      where: { id },
-    });
+    return this.prisma.$transaction([
+      this.prisma.sizeProduct.deleteMany({
+        where: { productId: id },
+      }),
+      this.prisma.product.delete({
+        where: { id },
+      }),
+    ]);
   }
 }

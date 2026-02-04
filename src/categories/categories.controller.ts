@@ -21,7 +21,7 @@ import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
 import { CsrfGuard } from '../auth/guards/csrf.guard.js';
-import { regexFile } from '../common/regex.js';
+import { allowedMimeTypes } from '../common/regex.js';
 
 @Controller('categories')
 export class CategoriesController {
@@ -37,7 +37,7 @@ export class CategoriesController {
     FileInterceptor('image', {
       limits: { fileSize: 5 * 1024 * 1024 },
       fileFilter(req, file, callback) {
-        if (!file.mimetype.match(regexFile))
+        if (!allowedMimeTypes.includes(file.mimetype))
           return callback(new Error('File is invalid'), false);
         else callback(null, true);
       },
@@ -73,7 +73,7 @@ export class CategoriesController {
     FileInterceptor('image', {
       limits: { fileSize: 5 * 1024 * 1024 },
       fileFilter(req, file, callback) {
-        if (!file.mimetype.match(regexFile))
+        if (!allowedMimeTypes.includes(file.mimetype))
           return callback(new Error('File is invalid'), false);
         else callback(null, true);
       },

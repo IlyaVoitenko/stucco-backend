@@ -1,26 +1,34 @@
 import {
-  ArrayNotEmpty,
-  IsArray,
   IsInt,
+  IsJSON,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
-  ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class CreateSizeProductDto {
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
-  width?: number;
+  width?: number | null;
 
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
-  height?: number;
+  height?: number | null;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  depth?: number | null;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  diameter?: number | null;
 
   @Type(() => Number)
   @IsNumber()
@@ -32,32 +40,38 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   name!: string;
+
   @IsString()
   @IsNotEmpty()
   description!: string;
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  images!: string[];
+  // @IsArray()
+  // @ArrayNotEmpty()
+  // @IsString({ each: true })
+  // images!: string[];
   @IsNotEmpty()
   @IsString()
   material!: string;
+
   @IsNotEmpty()
   @Type(() => Number)
   @IsNumber()
+  @Transform(({ value }) => Number(value))
   price!: number;
+
   @IsString()
+  @IsOptional()
   sku?: string;
+
   @IsNotEmpty()
   @IsString()
   type!: string;
+
   @Type(() => Number)
   @IsInt()
   @IsPositive()
   categoryId!: number;
+
   @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateSizeProductDto)
-  sizes?: CreateSizeProductDto[];
+  @IsJSON()
+  sizes?: string | CreateSizeProductDto[];
 }

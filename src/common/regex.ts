@@ -1,1 +1,8 @@
-export const regexFile = /^image\/(png|jpeg|jpg|webp|avif\+xml)$/;
+export const allowedMimeTypes = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/avif',
+  'image/svg+xml',
+];
