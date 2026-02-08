@@ -8,8 +8,8 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      'http://localhost:3000',
-      'http://localhost:5173',
+      // 'http://localhost:3000',
+      // 'http://localhost:5173',
       process.env.PRODUCTION_URL,
       process.env.ADMIN_PANEL_URL,
     ].filter((url): url is string => Boolean(url)),
