@@ -7,12 +7,18 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
-    origin: [
-      // 'http://localhost:3000',
-      // 'http://localhost:5173',
-      process.env.PRODUCTION_URL,
-      process.env.ADMIN_PANEL_URL,
-    ].filter((url): url is string => Boolean(url)),
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        process.env.ADMIN_PANEL_URL,
+        process.env.PRODUCTION_URL,
+      ];
+
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   });
   app.use(cookieParser());
