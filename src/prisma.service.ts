@@ -1,11 +1,11 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import * as PrismaPkg from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
 @Injectable()
 export class PrismaService implements OnModuleInit, OnModuleDestroy {
-  private prismaClient: PrismaClient;
+  private prismaClient: any;
   private pool: Pool | null = null;
 
   constructor() {
@@ -14,7 +14,12 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     });
     this.pool = pool;
     const adapter = new PrismaPg(pool);
-    this.prismaClient = new PrismaClient({ adapter });
+    const Client =
+      (PrismaPkg as any).PrismaClient ??
+      (PrismaPkg as any).default?.PrismaClient ??
+      (PrismaPkg as any).default ??
+      (PrismaPkg as any);
+    this.prismaClient = new Client({ adapter });
   }
 
   get category() {
