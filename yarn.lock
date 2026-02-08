@@ -1706,12 +1706,12 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.9.tgz#d229a7b7f9dac167a156992ef23c7f023653f53b"
   integrity sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==
 
-"@prisma/adapter-pg@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@prisma/adapter-pg/-/adapter-pg-7.0.1.tgz#44e67f1b47b16ac7451e2697934ea64f65ce9b48"
-  integrity sha512-01GpPPhLMoDMF4ipgfZz0L87fla/TV/PBQcmHy+9vV1ml6gUoqF8dUIRNI5Yf2YKpOwzQg9sn8C7dYD1Yio9Ug==
+"@prisma/adapter-pg@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@prisma/adapter-pg/-/adapter-pg-7.3.0.tgz#4672c13dd62e7720f71e651a42707d7370db65ca"
+  integrity sha512-iuYQMbIPO6i9O45Fv8TB7vWu00BXhCaNAShenqF7gLExGDbnGp5BfFB4yz1K59zQ59jF6tQ9YHrg0P6/J3OoLg==
   dependencies:
-    "@prisma/driver-adapter-utils" "7.0.1"
+    "@prisma/driver-adapter-utils" "7.3.0"
     pg "^8.16.3"
     postgres-array "3.0.4"
 
@@ -1747,6 +1747,11 @@
   resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-7.0.1.tgz#bc3f2cd23272ab286e801399d3b1aa342e4918ee"
   integrity sha512-5+25XokVeAK2Z2C9W457AFw7Hk032Q3QI3G58KYKXPlpgxy+9FvV1+S1jqfJ2d4Nmq9LP/uACrM6OVhpJMSr8w==
 
+"@prisma/debug@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-7.3.0.tgz#b953ee8263b26af54ddb2c1799953009d51ec814"
+  integrity sha512-yh/tHhraCzYkffsI1/3a7SHX8tpgbJu1NPnuxS4rEpJdWAUDHUH25F1EDo6PPzirpyLNkgPPZdhojQK804BGtg==
+
 "@prisma/dev@0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@prisma/dev/-/dev-0.13.0.tgz#741a732f6827c0ca3fb228bb3d453e251c9c3e2b"
@@ -1770,12 +1775,12 @@
     valibot "1.1.0"
     zeptomatch "2.0.2"
 
-"@prisma/driver-adapter-utils@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@prisma/driver-adapter-utils/-/driver-adapter-utils-7.0.1.tgz#d2dc210546de0fefaf79aeca2d9ee91947d3ace1"
-  integrity sha512-sBbxm/yysHLLF2iMAB+qcX/nn3WFgsiC4DQNz0uM6BwGSIs8lIvgo0u8nR9nxe5gvFgKiIH8f4z2fgOEMeXc8w==
+"@prisma/driver-adapter-utils@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@prisma/driver-adapter-utils/-/driver-adapter-utils-7.3.0.tgz#3242f206a8749846db1c611a5cb283c547da7c0f"
+  integrity sha512-Wdlezh1ck0Rq2dDINkfSkwbR53q53//Eo1vVqVLwtiZ0I6fuWDGNPxwq+SNAIHnsU+FD/m3aIJKevH3vF13U3w==
   dependencies:
-    "@prisma/debug" "7.0.1"
+    "@prisma/debug" "7.3.0"
 
 "@prisma/engines-version@7.1.0-2.f09f2815f091dbba658cdcd2264306d88bb5bda6":
   version "7.1.0-2.f09f2815f091dbba658cdcd2264306d88bb5bda6"
