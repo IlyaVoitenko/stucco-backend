@@ -16,7 +16,7 @@ import { UpdateProductDto } from './dto/update_product.dto.js';
 import { Delete, Get, Patch, Post } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
-// import { CsrfGuard } from '../auth/guards/csrf.guard.js';
+import { CsrfGuard } from '../auth/guards/csrf.guard.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ValidateImagePipe } from '../common/pipes.js';
@@ -30,7 +30,7 @@ export class ProductsController {
     private readonly awsService: AwsService,
   ) {}
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Post()
   @UseInterceptors(
@@ -75,7 +75,7 @@ export class ProductsController {
     return this.productsService.findByCategory(+categoryId);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Patch(':id')
   @UseInterceptors(
@@ -120,7 +120,7 @@ export class ProductsController {
     return this.productsService.update(+id, dto, images);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
   @Roles('ADMIN', 'USER')
   @Delete(':id')
   async remove(@Param('id') id: string) {
