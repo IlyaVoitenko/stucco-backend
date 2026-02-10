@@ -43,7 +43,7 @@ export class AuthService {
       httpOnly: false,
       sameSite: 'none',
       secure: true,
-      domain: '/',
+      path: '/',
       maxAge: 6 * 60 * 60 * 1000,
     });
 
@@ -51,7 +51,7 @@ export class AuthService {
       httpOnly: false,
       sameSite: 'none',
       secure: true,
-      domain: '/',
+      path: '/',
       maxAge: 6 * 60 * 60 * 1000,
     });
     res.send({ ok: true });
