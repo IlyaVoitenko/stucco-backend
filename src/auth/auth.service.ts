@@ -38,23 +38,6 @@ export class AuthService {
       where: { id: user.id },
       data: { jwtToken, csrfToken: csrf },
     });
-    // res.cookie('jwtToken', jwtToken, {
-    //   httpOnly: true,
-    //   // sameSite: 'none',
-    //   // secure: true,
-    //   secure: false,
-    //   sameSite: 'none',
-    //   maxAge: 6 * 60 * 60 * 1000,
-    // });
-
-    // res.cookie('csrfToken', csrf, {
-    //   httpOnly: false,
-    //   // sameSite: 'none',
-    //   // secure: true,
-    //   secure: false,
-    //   sameSite: 'none',
-    //   maxAge: 6 * 60 * 60 * 1000,
-    // });
 
     res.cookie('jwtToken', jwtToken, {
       httpOnly: true,

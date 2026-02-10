@@ -17,10 +17,10 @@ export class CsrfGuard implements CanActivate {
       return true;
     }
 
-    const csrfHeader = req.get('x-csrf-token');
+    const csrfHeader = req.headers['x-csrf-token'];
     const csrfCookie = req.cookies?.csrfToken;
 
-    if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie) {
+    if (!csrfHeader || csrfHeader !== csrfCookie) {
       throw new ForbiddenException('Invalid CSRF token');
     }
 
