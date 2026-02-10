@@ -55,17 +55,18 @@ export class AuthService {
     //   sameSite: 'none',
     //   maxAge: 6 * 60 * 60 * 1000,
     // });
+
     res.cookie('jwtToken', jwtToken, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: false,
+      sameSite: 'none',
+      secure: true,
       maxAge: 6 * 60 * 60 * 1000,
     });
 
     res.cookie('csrfToken', csrf, {
       httpOnly: false,
-      sameSite: 'lax',
-      secure: false,
+      sameSite: 'none',
+      secure: true,
       maxAge: 6 * 60 * 60 * 1000,
     });
     res.send({ ok: true });
