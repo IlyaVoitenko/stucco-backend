@@ -40,9 +40,10 @@ export class AuthService {
     });
 
     res.cookie('jwtToken', jwtToken, {
-      httpOnly: true,
+      httpOnly: false,
       sameSite: 'none',
       secure: true,
+      domain: process.env.ADMIN_PANEL_URL,
       maxAge: 6 * 60 * 60 * 1000,
     });
 
@@ -50,6 +51,7 @@ export class AuthService {
       httpOnly: false,
       sameSite: 'none',
       secure: true,
+      domain: process.env.ADMIN_PANEL_URL,
       maxAge: 6 * 60 * 60 * 1000,
     });
     res.send({ ok: true });
