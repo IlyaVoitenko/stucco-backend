@@ -38,21 +38,22 @@ export class AuthService {
       where: { id: user.id },
       data: { jwtToken, csrfToken: csrf },
     });
-
+    const isDev = process.env.NODE_ENV !== 'production';
     res.cookie('jwtToken', jwtToken, {
-      httpOnly: false,
-      sameSite: 'none',
-      secure: true,
+      httpOnly: true,
+      secure: !isDev,
+      sameSite: isDev ? 'lax' : 'none',
       path: '/',
-      maxAge: 6 * 60 * 60 * 1000,
+
+      maxAge: 1000 * 60 * 60 * 24,
     });
 
     res.cookie('csrfToken', csrf, {
       httpOnly: false,
-      sameSite: 'none',
-      secure: true,
+      secure: !isDev,
+      sameSite: isDev ? 'lax' : 'none',
       path: '/',
-      maxAge: 6 * 60 * 60 * 1000,
+      maxAge: 1000 * 60 * 60 * 24,
     });
     res.send({ ok: true });
   }
