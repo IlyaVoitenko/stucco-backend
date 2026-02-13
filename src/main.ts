@@ -11,7 +11,10 @@ async function bootstrap() {
   app.enableCors({
     origin: isDev
       ? ['http://localhost:5173']
-      : [process.env.ADMIN_PANEL_URL!, process.env.PRODUCTION_URL!],
+      : [
+          process.env.ADMIN_PANEL_URL!,
+          process.env.PRODUCTION_STORE_WEBSITE_URL!,
+        ],
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
