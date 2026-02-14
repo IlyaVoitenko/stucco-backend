@@ -10,7 +10,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: isDev
-      ? ['http://localhost:5173']
+      ? ['http://localhost:5173', 'http://localhost:3000']
       : [
           process.env.ADMIN_PANEL_URL!,
           process.env.PRODUCTION_STORE_WEBSITE_URL!,
