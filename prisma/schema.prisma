@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-}
+ }
 enum ProductType {
   BY_METER
   BY_ITEM
