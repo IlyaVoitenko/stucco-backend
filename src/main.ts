@@ -7,7 +7,6 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const isDev = process.env.NODE_ENV !== 'production';
   app.use(cookieParser());
-
   app.enableCors({
     origin: isDev
       ? ['http://localhost:5173', 'http://localhost:3000']
