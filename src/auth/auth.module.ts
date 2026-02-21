@@ -4,7 +4,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller.js';
 import { PrismaService } from '../prisma.service.js';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
-import { CsrfGuard } from './guards/csrf.guard.js';
 @Module({
   imports: [
     JwtModule.registerAsync({
@@ -23,8 +22,8 @@ import { CsrfGuard } from './guards/csrf.guard.js';
       },
     }),
   ],
-  providers: [AuthService, PrismaService, AuthGuard, CsrfGuard],
+  providers: [AuthService, PrismaService, AuthGuard],
   controllers: [AuthController],
-  exports: [AuthService, AuthGuard, CsrfGuard, JwtModule],
+  exports: [AuthService, AuthGuard, JwtModule],
 })
 export class AuthModule {}

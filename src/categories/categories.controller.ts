@@ -20,7 +20,6 @@ import { AwsService } from '../shared/aws.services.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
-import { CsrfGuard } from '../auth/guards/csrf.guard.js';
 import { allowedMimeTypes } from '../common/regex.js';
 
 @Controller('categories')
@@ -30,7 +29,7 @@ export class CategoriesController {
     private readonly awsService: AwsService,
   ) {}
 
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN', 'USER')
   @Post()
   @UseInterceptors(
@@ -66,7 +65,7 @@ export class CategoriesController {
     return this.categoriesService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN', 'USER')
   @Patch(':id')
   @UseInterceptors(
@@ -99,7 +98,7 @@ export class CategoriesController {
       image: newImageUrl,
     });
   }
-  @UseGuards(AuthGuard, RolesGuard, CsrfGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN', 'USER')
   @Delete(':id')
   async remove(@Param('id') id: string) {

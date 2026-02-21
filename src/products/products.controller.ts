@@ -16,7 +16,6 @@ import { UpdateProductDto } from './dto/update_product.dto.js';
 import { Delete, Get, Patch, Post } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
-// import { CsrfGuard } from '../auth/guards/csrf.guard.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ValidateImagePipe } from '../common/pipes.js';
