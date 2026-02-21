@@ -1,17 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service.js';
-
+import { Prisma, Category } from '@prisma/client';
 @Injectable()
 export class CategoriesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(data: {
-    name: string;
-    image: string;
-    hasWidth?: boolean;
-    hasHeight?: boolean;
-    hasDepth?: boolean;
-    hasDiameter?: boolean;
-  }) {
+  create(data: Prisma.CategoryCreateInput): Promise<Category> {
     if (!data.name)
       throw new BadRequestException('Category name cannot be empty');
     return this.prisma.category.create({ data });
@@ -31,7 +24,7 @@ export class CategoriesService {
       );
     return this.prisma.category.findUnique({ where: { name } });
   }
-  update(id: number, data: { name?: string; image?: string }) {
+  update(id: number, data: Prisma.CategoryUpdateInput) {
     if (!id || !data) throw new BadRequestException('error updating category');
     return this.prisma.category.update({ where: { id }, data });
   }

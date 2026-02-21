@@ -94,7 +94,7 @@ export class CategoriesController {
     }
 
     return this.categoriesService.update(+id, {
-      name: updateCategoryDto.name,
+      ...updateCategoryDto,
       image: newImageUrl,
     });
   }
