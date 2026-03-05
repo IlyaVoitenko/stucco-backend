@@ -9,6 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       process.env.DEV_STORE_WEBSITE_URL!,
+      process.env.DEV_ADMIN_PANEL_URL!,
       process.env.ADMIN_PANEL_URL!,
       process.env.PRODUCTION_STORE_WEBSITE_URL!,
     ],
