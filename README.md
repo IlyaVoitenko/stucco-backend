@@ -170,14 +170,6 @@ yarn test:cov
 yarn test:e2e
 ```
 
-## Quality and Production Recommendations
-
-- **Use `.env.example`**: commit a sanitized template and keep `.env` local/private.
-- **Tighten CORS by environment**: allow only trusted domains in production.
-- **Run migrations in CI/CD**: ensure schema and app deployments stay aligned.
-- **Monitor file upload failures**: S3/network errors should be tracked in logs.
-- **Clean generated duplicates**: remove duplicate generated files (for example `* 2.ts`) to reduce confusion and review noise.
-
 ## License
 
 Private internal project (`UNLICENSED`).
